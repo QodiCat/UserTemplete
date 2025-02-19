@@ -3,7 +3,7 @@ import redis
 
 
 def get_redis() -> redis.StrictRedis:
-    from app.base import app_config #延迟引入，避免循环引用
+    from app import app_config #延迟引入，避免循环引用
     redis_config = app_config.redis_config
     redis_host = redis_config["host"]
     redis_password = redis_config["password"]

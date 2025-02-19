@@ -10,8 +10,8 @@ import time
 import random
 
 from app.models import user
-from app.base import app_config
-from app.base import logger
+from app import app_config
+from app import logger
 from app.schemas.user import UserResponse, UserData
 from app.models.user import User
 from app.config.constant import REDIS_USER_REGISTER_CODE, REDIS_USER_LOGIN_CODE, REDIS_USER_RESET_CODE

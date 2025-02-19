@@ -5,8 +5,7 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 import os
 
-from app.utils.log import  LogManager, LogBroker
-from app.base import logger,app_config
+from app import logger,app_config
 
 #from wordease.api.user import api_user
 
@@ -18,9 +17,7 @@ logo_tmpl=r"""
 
 def check_env():
     os.makedirs("data/", exist_ok=True)
-    if not os.path.exists("data/cmd.config.json"):
-        with open("data/cmd.config.json", "w") as f:
-            f.write("{}")
+
 
 app = FastAPI(
     title="API",
@@ -53,8 +50,7 @@ if __name__ == '__main__':
         add_exception_handlers=True,  # 显示错误信息
     )
 
-    log_broker = LogBroker()
-    LogManager.set_queue_handler(logger, log_broker)
+    
     logger.info(logo_tmpl)
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
     
