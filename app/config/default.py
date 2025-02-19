@@ -28,7 +28,6 @@ DEFAULT_CONFIG={
             "models": {
                 "models": [
                     "app.models.user",
-                    "aerich.models"
                 ],
                 "default_connection": "default",
             },

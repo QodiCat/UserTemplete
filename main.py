@@ -16,10 +16,11 @@ logo_tmpl=r"""
             app已经运行
 ----------------------------------------
 """
+mysql_config = app_config.mysql_config
+
 
 def check_env():
     os.makedirs("data/", exist_ok=True)
-
 
 app = FastAPI(
     title="API",
@@ -29,13 +30,18 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
-
-app.include_router(api_user, prefix="/user", tags=["用户相关接口"])
-app.include_router(api_system, prefix="/system", tags=["系统相关接口"])
-
+    # 初始化 Tortoise ORM
+register_tortoise(
+        app,
+        config=mysql_config,
+        generate_schemas=True,  # 开发环境可以生成表结构，生产环境建议关闭
+        add_exception_handlers=True,  # 显示错误信息
+    )
+check_env()
 @app.get("/")
 async def root():
     return {"message": "欢迎使用API模板"}
+    
 app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],  # 允许所有来源
@@ -44,19 +50,11 @@ app.add_middleware(
         allow_headers=["*"],  # 允许所有头
     )
 
-if __name__ == '__main__':
-    
-    check_env()
-    mysql_config = app_config.mysql_config
-    # 初始化 Tortoise ORM
-    register_tortoise(
-        app,
-        config=mysql_config,
-        generate_schemas=True,  # 开发环境可以生成表结构，生产环境建议关闭
-        add_exception_handlers=True,  # 显示错误信息
-    )
+app.include_router(api_user, prefix="/user", tags=["用户相关接口"])
+app.include_router(api_system, prefix="/system", tags=["系统相关接口"])
 
-    
+
+if __name__ == '__main__':
     logger.info(logo_tmpl)
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
     
