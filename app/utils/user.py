@@ -14,6 +14,8 @@ from app import logger
 from app.schemas.user import UserResponse, UserData
 from app.config.constant import REDIS_USER_REGISTER_CODE, REDIS_USER_LOGIN_CODE, REDIS_USER_RESET_CODE
 from app.utils.verification_code_platform import SendSms
+from app import redis_client
+
 SECRET_KEY=app_config.jwt_config.jwt_secret_key
 ALGORITHM = 'HS256'
 
@@ -138,18 +140,4 @@ def generate_account():
     account = str(timestamp)[-5:] + f"{random_suffix:02d}"  # 时间戳后5位 + 2位随机数
     return account
 
-# 创建一个映射函数
-def map_user_to_user_response(user: User) -> UserResponse:
-    return UserResponse(
-        user_id=user.user_id,
-        account=user.account,
-        username=user.username,
-        phone=user.phone,
-        points=user.points,
-        gender=user.gender,
-        email=user.email,
-        identify=user.identify,
-        photo_url=user.photo_url,
-        invitation_code=user.invitation_code
-    )
 
