@@ -3,9 +3,10 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
+import os
 
-from app.core import logger, LogManager, LogBroker
-from app.core import wordease_config
+from app.utils.log import  LogManager, LogBroker
+from app.base import logger,app_config
 
 #from wordease.api.user import api_user
 
@@ -14,6 +15,13 @@ logo_tmpl=r"""
             app已经运行
 ----------------------------------------
 """
+
+def check_env():
+    os.makedirs("data/", exist_ok=True)
+    if not os.path.exists("data/cmd.config.json"):
+        with open("data/cmd.config.json", "w") as f:
+            f.write("{}")
+
 app = FastAPI(
     title="API",
     description="API模板",
@@ -35,8 +43,8 @@ app.add_middleware(
 
 if __name__ == '__main__':
     #app.include_router(api_user, prefix="/user", tags=["用户接口"])
-
-    mysql_config = wordease_config.mysql_config
+    check_env()
+    mysql_config = app_config.mysql_config
     # 初始化 Tortoise ORM
     register_tortoise(
         app,

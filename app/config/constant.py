@@ -1,6 +1,6 @@
 
 
-WORDEASE_CONFIG_PATH = "data/cmd_config.json"
+APP_CONFIG_PATH = "data/cmd_config.json"
 
 DEFAULT_VALUE_MAP = {
     "int": 0,

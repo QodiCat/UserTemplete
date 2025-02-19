@@ -4,11 +4,11 @@ import json
 from typing import Dict
 import logging
 
-from .constant import WORDEASE_CONFIG_PATH,DEFAULT_VALUE_MAP
+from .constant import APP_CONFIG_PATH,DEFAULT_VALUE_MAP
 from .default import DEFAULT_CONFIG
 
 
-logger = logging.getLogger("wordease")
+logger = logging.getLogger("app")
 class AppConfig(dict):
     '''从配置文件中加载的配置，支持直接通过点号操作符访问根配置项。
     
@@ -18,7 +18,7 @@ class AppConfig(dict):
     '''
     def __init__(
         self,
-        config_path:str=WORDEASE_CONFIG_PATH,
+        config_path:str=APP_CONFIG_PATH,
         default_config:dict=DEFAULT_CONFIG,
         schema: dict = None
     ):

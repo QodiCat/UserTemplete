@@ -10,3 +10,7 @@
     vip_level, vip_start_time, vip_end_time, vip_type
 身份信息
     identity_type
+
+
+
+还需要做的，统一终端日志输出，日志文件输出等等

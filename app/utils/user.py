@@ -1,4 +1,5 @@
 
+import hashlib
 import string
 import secrets
 from datetime import datetime, timedelta
@@ -9,9 +10,10 @@ import time
 import random
 
 from app.models import user
-from app import app_config
-from app import logger
+from app.base import app_config
+from app.base import logger
 from app.schemas.user import UserResponse, UserData
+from app.models.user import User
 from app.config.constant import REDIS_USER_REGISTER_CODE, REDIS_USER_LOGIN_CODE, REDIS_USER_RESET_CODE
 from app.utils.verification_code_platform import SendSms
 from app import redis_client
@@ -64,6 +66,12 @@ def decode_jwt(token: str):
         logger.error(f"解码 JWT 时发生错误: {str(e)}")
         raise HTTPException(status_code=400, detail="无效的 Token")
 
+
+def md5(s):
+    s = s.encode("utf8")
+    m = hashlib.md5()
+    m.update(s)
+    return m.hexdigest()
 
 
 #------------------------------
@@ -141,3 +149,17 @@ def generate_account():
     return account
 
 
+# 创建一个映射函数
+def map_user_to_user_response(user: User) -> UserResponse:
+    return UserResponse(
+        user_id=user.user_id,
+        account=user.account,
+        username=user.username,
+        phone=user.phone,
+        points=user.points,
+        gender=user.gender,
+        email=user.email,
+        identify=user.identify,
+        photo_url=user.photo_url,
+        invitation_code=user.invitation_code
+    )
