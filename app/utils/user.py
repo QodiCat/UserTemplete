@@ -13,12 +13,13 @@ from app.models import user
 from app import app_config
 from app import logger
 from app.schemas.user import UserResponse, UserData
-from app.models.user import User
+
 from app.config.constant import REDIS_USER_REGISTER_CODE, REDIS_USER_LOGIN_CODE, REDIS_USER_RESET_CODE
 from app.utils.verification_code_platform import SendSms
 from app import redis_client
 
-SECRET_KEY=app_config.jwt_config.jwt_secret_key
+jwt_config=app_config.jwt_config
+SECRET_KEY=jwt_config["jwt_secret_key"]
 ALGORITHM = 'HS256'
 
 
@@ -99,6 +100,7 @@ async def get_code(phone: str, REDIS_PATH: str):
     # 验证手机号格式
     phone_regex = re.compile(r"^1[3-9]\d{9}$")
     if not phone_regex.match(phone):
+        logger.error(f"手机号格式不正确！")
         raise HTTPException(status_code=400, detail="手机号格式不正确！")
 
     # 获取当前时间戳（单位：毫秒）
@@ -125,7 +127,7 @@ async def get_code(phone: str, REDIS_PATH: str):
     # 存储验证码到Redis中
     result = redis_client.set(REDIS_PATH + phone, str(code), ex=300)  # 过期时间五分钟
     # todo 发送验证码到手机
-    print(f"验证码发送到手机号 {phone}: {code}")
+    logger.info(f"验证码发送到手机号 {phone}: {code}")
     return str(code)
 
 
@@ -149,17 +151,3 @@ def generate_account():
     return account
 
 
-# 创建一个映射函数
-def map_user_to_user_response(user: User) -> UserResponse:
-    return UserResponse(
-        user_id=user.user_id,
-        account=user.account,
-        username=user.username,
-        phone=user.phone,
-        points=user.points,
-        gender=user.gender,
-        email=user.email,
-        identify=user.identify,
-        photo_url=user.photo_url,
-        invitation_code=user.invitation_code
-    )

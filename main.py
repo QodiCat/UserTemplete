@@ -6,6 +6,8 @@ from tortoise.contrib.fastapi import register_tortoise
 import os
 
 from app import logger,app_config
+from app.api.user import api_user
+from app.api.system import api_system
 
 #from wordease.api.user import api_user
 
@@ -27,6 +29,10 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+app.include_router(api_user, prefix="/user", tags=["用户相关接口"])
+app.include_router(api_system, prefix="/system", tags=["系统相关接口"])
+
 @app.get("/")
 async def root():
     return {"message": "欢迎使用API模板"}
@@ -46,7 +52,7 @@ if __name__ == '__main__':
     register_tortoise(
         app,
         config=mysql_config,
-        generate_schemas=False,  # 开发环境可以生成表结构，生产环境建议关闭
+        generate_schemas=True,  # 开发环境可以生成表结构，生产环境建议关闭
         add_exception_handlers=True,  # 显示错误信息
     )
 

@@ -2,6 +2,7 @@
 存储默认的配置文件
 """
 from .secert import *
+from .constant import *
 
 DEFAULT_CONFIG={
     "mysql_config": {
@@ -21,11 +22,6 @@ DEFAULT_CONFIG={
             "models": {
                 "models": [
                     "app.models.user",
-                    "app.models.role",
-                    "app.models.cakey", 
-                    "app.models.cakey_vip", 
-                    "app.models.llm_history",
-                    "aerich.models"
                 ],
                 "default_connection": "default",
             }
@@ -35,14 +31,18 @@ DEFAULT_CONFIG={
         "host": redis_host,
         "password": redis_password,
         "db": redis_db,
-        "port": redis_pord
+        "port": redis_pord,
+        "user_register_code": REDIS_USER_REGISTER_CODE,
+        "user_login_code": REDIS_USER_LOGIN_CODE,
+        "user_reset_code": REDIS_USER_RESET_CODE
     },
     "jwt_config": {
         "jwt_secret_key": jwt_secrect_config,
     },
     "verification_code_config": {
         "alibaba_cloud_accesskey_id": alibaba_cloud_accesskey_iD,
-        "alibaba_cloud_accesskey_secret": alibaba_cloud_accesskey_secret
+        "alibaba_cloud_accesskey_secret": alibaba_cloud_accesskey_secret,
+        "sign_name": sign_name,
     }
 }
 
