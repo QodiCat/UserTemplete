@@ -4,19 +4,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
-from wordease.core import logger, LogManager, LogBroker
-from wordease.core import wordease_config
+from app.core import logger, LogManager, LogBroker
+from app.core import wordease_config
 
 #from wordease.api.user import api_user
 
 logo_tmpl=r"""
 ----------------------------------------
-            wordease已经运行
+            app已经运行
 ----------------------------------------
 """
 app = FastAPI(
-    title="WordEase API",
-    description="一款随时陪伴的语言学习软件",
+    title="API",
+    description="API模板",
     version="0.1.0",
     openapi_url="/openapi.json",
     docs_url="/docs",
@@ -24,7 +24,7 @@ app = FastAPI(
 )
 @app.get("/")
 async def root():
-    return {"message": "欢迎来到WordEase,一款随时陪伴的语言学习软件"}
+    return {"message": "欢迎使用API模板"}
 app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],  # 允许所有来源

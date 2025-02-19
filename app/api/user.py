@@ -7,20 +7,22 @@ from fastapi import APIRouter, HTTPException
 from tortoise.exceptions import IntegrityError
 from tortoise.expressions import Q
 
-from wordease.models.user import User
-from wordease.schemas.general_response import ResponseModel
-from wordease.schemas.user import UserRegister,UserPasswordLogin,UserUpdate,UserCodeLogin
-from wordease.utils.user.json_web_token import create_jwt
-from wordease.utils.user.user_function import redis_client,map_user_to_user_response,get_current_user, get_code, check_code,generate_account
-from wordease.utils.database.redis import get_redis
-from wordease.utils.secure import md5
-from wordease.config.constant import *
+from app.models.user import User
+from app.schemas.response import ResponseModel
+from app.schemas.user import UserRegister,UserPasswordLogin,UserUpdate,UserCodeLogin
+from app.utils.user import create_jwt
+from app.utils.user.user_function import redis_client,map_user_to_user_response,get_current_user, get_code, check_code,generate_account
+from app.utils.database.redis import get_redis
+from app.utils.secure import md5
+from app.config.constant import *
 
 
 # 生成路由对象
 api_user = APIRouter()
 
 redis = get_redis()
+
+
 
 #用户注册部分 /register开头
 

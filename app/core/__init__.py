@@ -1,5 +1,5 @@
 
-from wordease.config.wordease_config import WordEaseConfig
+from app.config.app_config import WordEaseConfig
 from .log import LogManager, LogBroker
 
 wordease_config = WordEaseConfig()

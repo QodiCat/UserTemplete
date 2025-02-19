@@ -9,7 +9,7 @@ from .default import DEFAULT_CONFIG
 
 
 logger = logging.getLogger("wordease")
-class WordEaseConfig(dict):
+class AppConfig(dict):
     '''从配置文件中加载的配置，支持直接通过点号操作符访问根配置项。
     
     - 初始化时会将传入的 default_config 与配置文件进行比对，如果配置文件中缺少配置项则会自动插入默认值并进行一次写入操作。会递归检查配置项。
