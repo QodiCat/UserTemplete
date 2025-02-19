@@ -6,12 +6,14 @@ from fastapi import HTTPException
 import jwt
 import re
 import time
+import random
 
 from app.models import user
 from app.core import app_config
 from app.core import logger
 from app.schemas.user import UserResponse, UserData
-
+from app.config.constant import REDIS_USER_REGISTER_CODE, REDIS_USER_LOGIN_CODE, REDIS_USER_RESET_CODE
+from app.utils.verification_code_platform import SendSms
 SECRET_KEY=app_config.jwt_config.jwt_secret_key
 ALGORITHM = 'HS256'
 
@@ -36,19 +38,9 @@ def create_jwt(current_user: user):
     expiration = datetime.now() + timedelta(days=30)  # 七天过期
     payload = {
         "user_id": str(current_user.user_id),
-        "account" : current_user.account,
-        "username" : current_user.username,
-        "phone": current_user.phone,
-        "email": current_user.email,
-        "gender": current_user.gender,
-        "points" : current_user.points,
-        "photo_url": current_user.photo_url,
-        "invitation_code" : current_user.invitation_code,
-        "identify" : current_user.identify
     }
 
     headers = {"alg": ALGORITHM, "typ": "JWT"}
-
     # 生成 token
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM, headers=headers)
     print(f"Generated JWT: {token}")
@@ -72,7 +64,9 @@ def decode_jwt(token: str):
 
 
 
-
+#------------------------------
+#         获取用户部分
+#------------------------------
 
 # 获取当前用户信息
 def get_current_user(token: str):
@@ -87,15 +81,8 @@ def get_current_user(token: str):
         # 如果 token 无效或已过期，返回 401 错误
         raise HTTPException(status_code=401, detail="Token 无效或已过期，请重新登录")
 
-    # 2. 将解码后的数据映射到 UserData
-    try:
-        current_user = UserData(**data)  # 解码后的字典直接传递给 UserData 构造函数
-    except Exception as e:
-        # 如果映射失败（例如数据不符合 UserData 的字段要求），抛出异常
-        raise HTTPException(status_code=400, detail=f"用户数据映射失败: {str(e)}")
-
-    # 3. 返回当前用户对象
-    return current_user
+    # 2. 返回当前用户对象
+    return data
 
 
 async def get_code(phone: str, REDIS_PATH: str):
@@ -125,7 +112,6 @@ async def get_code(phone: str, REDIS_PATH: str):
     elif REDIS_PATH == REDIS_USER_RESET_CODE:
         await SendSms.exec(phone, 'SMS_476695363', str(code))
 
-
     # 存储验证码到Redis中
     result = redis_client.set(REDIS_PATH + phone, str(code), ex=300)  # 过期时间五分钟
     # todo 发送验证码到手机
@@ -143,7 +129,6 @@ async def check_code(code: str, phone: str, REDIS_PATH: str):
     ttl = redis_client.ttl(REDIS_PATH + phone)
     if ttl <= 0:
         raise HTTPException(status_code=400, detail="验证码已过期！")
-
     return True
 
 def generate_account():
