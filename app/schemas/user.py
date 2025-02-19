@@ -3,10 +3,11 @@ schemas/user.py
 用户相关的数据模型
 """
 
-from pydantic import BaseModel, UUID4
+from pydantic import  UUID4, EmailStr, constr
 from typing import Optional
 from uuid import UUID
-from pydantic.fields import Field
+
+from pydantic import BaseModel, Field, field_validator
 
 
 class UserData(BaseModel):
@@ -24,11 +25,42 @@ class UserData(BaseModel):
 
 
 class UserRegister(BaseModel):
-    username: str
-    phone: str
-    password: str
-    code: str                   # 验证码
-    invitation_code: Optional[str] = None # 邀请码，可选择
+    username: Optional[str] = Field(
+        default=None,
+        description="用户的用户名，可选"
+    )
+    phone: str = Field(
+        ...,
+        description="用户的手机号码或者账号必填",
+        min_length=11,
+        max_length=11
+    )
+    password: str = Field(
+        ...,
+        description="用户的密码，必填",
+        min_length=6,
+        max_length=20
+    )
+    verification_code: Optional[str]= Field(
+        default=None,
+        description="验证码，可选",
+        min_length=4,
+        max_length=6
+    )
+    invitation_code: Optional[str] = Field(
+        default=None,
+        description="邀请码，可选"
+    )
+
+    @field_validator('phone')
+    def validate_phone(cls, value):
+        if not value.isdigit():
+            raise ValueError("手机号码必须为数字")
+        return value
+
+
+
+
 
 class UserCodeLogin(BaseModel):
     phone: str

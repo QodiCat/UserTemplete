@@ -45,7 +45,7 @@ app.add_middleware(
     )
 
 if __name__ == '__main__':
-    #app.include_router(api_user, prefix="/user", tags=["用户接口"])
+    
     check_env()
     mysql_config = app_config.mysql_config
     # 初始化 Tortoise ORM

@@ -134,7 +134,7 @@ async def get_code(phone: str, REDIS_PATH: str):
 # 验证码校验
 async def check_code(code: str, phone: str, REDIS_PATH: str):
     redis_code = redis_client.get(REDIS_PATH + phone)
-    print("check code")
+    logger.info(f"检查代码中ing")
     # 验证码校验
     if code != redis_code:
         raise HTTPException(status_code=400, detail="验证码错误！")

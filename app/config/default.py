@@ -5,6 +5,12 @@ from .secert import *
 from .constant import *
 
 DEFAULT_CONFIG={
+    "user_config":{
+        "user_points":{
+            "init_points": 0,
+            "invite_points": 1000,
+        },
+    },
     "mysql_config": {
         "connections": {
             "default": {
@@ -15,17 +21,20 @@ DEFAULT_CONFIG={
                     "user": mysql_user,
                     "password": mysql_password,
                     "database": mysql_database,
-                }
+                },
             },
         }, 
         "apps": {
             "models": {
                 "models": [
                     "app.models.user",
+                    "aerich.models"
                 ],
                 "default_connection": "default",
-            }
-        },       
+            },
+        },
+        'use_tz': False,
+        'time_zone': 'Asia/Shanghai'       
     },
     "redis_config": {
         "host": redis_host,
@@ -43,6 +52,6 @@ DEFAULT_CONFIG={
         "alibaba_cloud_accesskey_id": alibaba_cloud_accesskey_iD,
         "alibaba_cloud_accesskey_secret": alibaba_cloud_accesskey_secret,
         "sign_name": sign_name,
-    }
+    },
 }
 
