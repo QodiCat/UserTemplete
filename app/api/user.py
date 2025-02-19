@@ -29,13 +29,6 @@ async def register_verification_code_get(phone : str):
     await get_code(phone, REDIS_USER_REGISTER_CODE)
     return ResponseModel.success("注册账号验证码发送成功")
 
-@api_user.get("/get_user/")
-async def get_user():
-    phone="19847776607"
-    user = await User.filter(phone = phone).first()
-    print(user)
-
-    return {"message": "欢迎来到鲸树AI"}
 
 @api_user.post("/register/verification-code-way",description="通过验证码的方式进行用户注册")
 async def register_by_verification_code(user_register: UserRegister):
