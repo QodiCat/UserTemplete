@@ -12,6 +12,7 @@ class ResponseModel(BaseModel):
 
     @classmethod
     def fail(cls, message: str, data: Optional[dict] = None):
+        
         return cls(message=message, data=data)
 
 
