@@ -67,8 +67,8 @@ class UserLogin(BaseModel):
         max_length=6
     )
 
-    @field_validator('account')
-    def validate_account(cls, value):
+    @field_validator('phone')
+    def validate_phone(cls, value):
         if not value.isdigit():
             raise ValueError("手机号码必须为数字")
         return value

@@ -175,13 +175,13 @@ async def logout(token: str):
 #------------------------------
 
 @api_user.get("/reset/verification-code/send",description="发送重置验证码")
-async def reset_password_verification_code_get(phone : str):
+async def reset_info_verification_code_get(phone : str):
     REDIS_USER_RESET_CODE = app_config.redis_config["user_reset_code"]
     await get_code(phone, REDIS_USER_RESET_CODE)
     return ResponseModel.success("重置验证码发送成功")
 
 @api_user.post("/reset/info/verification-code-way",description="通过验证码的方式重置信息")
-async def reset_password_by_verification_code_way(user_reset: UserReset):
+async def reset_info_by_verification_code_way(user_reset: UserReset):
     phone = user_reset.phone
     new_password = user_reset.new_password
     verification_code=user_reset.verification_code
@@ -213,7 +213,7 @@ async def reset_password_by_verification_code_way(user_reset: UserReset):
         raise HTTPException(status_code=404, detail="用户不存在")
 
 @api_user.post("/reset/info/password-way",description="通过密码的方式重置信息")
-async def reset_password_by_password(user_reset: UserReset):
+async def reset_info_by_password(user_reset: UserReset):
     phone = user_reset.phone
     old_password = user_reset.old_password
     if not old_password:

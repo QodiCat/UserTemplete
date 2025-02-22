@@ -12,7 +12,6 @@ import random
 from app.models import user
 from app import app_config
 from app import logger
-from app.schemas.user import UserResponse, UserData
 
 from app.config.constant import REDIS_USER_REGISTER_CODE, REDIS_USER_LOGIN_CODE, REDIS_USER_RESET_CODE
 from app.utils.verification_code_platform import SendSms
