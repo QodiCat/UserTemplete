@@ -3,7 +3,7 @@ user.py
 存放用户相关接口，如登录注册修改信息等
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException,Depends
 from tortoise.exceptions import IntegrityError
 from tortoise.expressions import Q
 
@@ -246,8 +246,14 @@ async def reset_password_by_password(user_reset: UserReset):
 #------------------------------
 #用户查看部分
 #------------------------------
-@api_user.get("/get_profile",description="获取当前用户信息")
+@api_user.get("/profile",description="获取当前用户信息")
 async def get_profile(token: str):
     current_user = get_current_user(token)
     return ResponseModel.success("获取用户信息成功", current_user)
+
+@api_user.get("/all-users", description="查询全部用户")
+async def get_all_users(token: str):
+    current_user = get_current_user(token)
+    user_list = await User.filter().all()
+    return user_list
 
