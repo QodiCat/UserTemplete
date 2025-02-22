@@ -44,24 +44,22 @@ def create_jwt(current_user: user):
     payload = {
         "user_id": str(current_user.user_id),
     }
-
     headers = {"alg": ALGORITHM, "typ": "JWT"}
     # 生成 token
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM, headers=headers)
-    print(f"Generated JWT: {token}")
     return token
 
 def decode_jwt(token: str):
     try:
         # 解码 JWT 并验证签名
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        logger.debug(f"Decoded JWT payload: {payload}")
+
         return payload
     except jwt.ExpiredSignatureError:
-        logger.debug("Token 已过期!")
+        logger.error("Token 已过期!")
         raise HTTPException(status_code=401, detail="Token 已过期")
     except jwt.InvalidTokenError as e:
-        logger.debug(f"Token 无效! 错误信息: {e}")
+        logger.error(f"Token 无效! 错误信息: {e}")
         raise HTTPException(status_code=401, detail="Token 无效")
     except Exception as e:
         logger.error(f"解码 JWT 时发生错误: {str(e)}")

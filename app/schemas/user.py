@@ -57,7 +57,7 @@ class UserRegister(BaseModel):
         if not value.isdigit():
             raise ValueError("手机号码必须为数字")
         return value
-
+    
 
 
 

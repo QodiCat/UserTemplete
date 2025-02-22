@@ -10,6 +10,7 @@ class User(Model):
     username = fields.CharField(default="", max_length=100, description="用户名")
     password = fields.CharField(default="", max_length=100, description="密码")
     points=fields.IntField(default=0,description="积分")
+    invitation_code=fields.CharField(default="", max_length=100, description="邀请码")
 
     
 
