@@ -59,7 +59,8 @@ async def register_by_verification_code(user_register: UserRegister):
         if inviting_user:
             inviting_user_id = inviting_user.user_id
             inviting_user_old_points = inviting_user.points
-            result = await User.filter(user_id=inviting_user_id).update(points=add_points + inviting_user_old_points)
+            inviting_user.points=add_points + inviting_user_old_points
+            await inviting_user.save()
 
         # 有邀请码，两个人都额外加 1000 分
         new_user_points = add_points+init_points

@@ -109,8 +109,6 @@ async def get_code(phone: str, REDIS_PATH: str):
     seed = timestamp + random.randint(0, 9999)
     # 生成随机验证码
     code = (seed % 900000) + 100000
-
-    # 发送验证码
     # 注册
     # SMS_476785298
     # 登录
