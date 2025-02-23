@@ -62,9 +62,10 @@ async def register_by_verification_code(user_register: UserRegister):
             inviting_user_old_points = inviting_user.points
             inviting_user.points=add_points + inviting_user_old_points
             await inviting_user.save()
-        new_user_points = add_points+init_points
+            new_user_points = add_points+init_points
         # 新建用户
         try:
+            new_user_points=init_points
             newUser = await User.create(
                 account = phone,
                 phone = phone,
