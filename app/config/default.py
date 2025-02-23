@@ -1,7 +1,7 @@
 """ 
 存储默认的配置文件
 """
-from .secert import *
+from .secret import *
 from .constant import *
 
 DEFAULT_CONFIG={

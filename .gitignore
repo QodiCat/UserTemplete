@@ -8,7 +8,7 @@ __pycache__/
 *.so
 # 忽略data文件夹
 data/
-app/config/secert.py
+app/config/secret.py
 # Distribution / packaging
 .Python
 build/
